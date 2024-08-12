@@ -1,11 +1,3 @@
-<x-nav-link href='/dashboard' :active="request()->is('/dashboard')">Dashboard</x-nav-link>
-<x-nav-link href='/data-transkrip' :active="request()->is('/data-transkrip')">Data Transkrip</x-nav-link>
-<x-nav-link href='/history-nilai' :active="request()->is('/history-nilai')">History Nilai</x-nav-link>
-<x-nav-link href='/jadwal-pribadi' :active="request()->is('/jadwal-pribadi')">Jadwal Pribadi</x-nav-link>
-<x-nav-link href='/mengisi-krs' :active="request()->is('/mengisi-krs')">Mengisi KRS</x-nav-link>
-<x-nav-link href='/jadwal-PA' :active="request()->is('/jadwal-PA')">Jadwal PA</x-nav-link>
-<x-nav-link href='/berita-acara-PA' :active="request()->is('/berita-acara-PA')">Berita Acara PA</x-nav-link>
-<x-nav-link href='/cetak-krs-kpu' :active="request()->is('/cetak-krs-kpu')">Cetak KRS / KPU</x-nav-link>
 <x-nav-link href='/data-pribadi' :active="request()->is('/data-pribadi')">Data Pribadi</x-nav-link>
 <x-nav-link href='/kuesioner-dosen' :active="request()->is('/kuesioner-dosen')">Kuesioner Dosen</x-nav-link>
 <x-nav-link href='/kuesioner-kepuasan' :active="request()->is('/kuesioner-kepuasan')">Kuesioner Kepuasan</x-nav-link>

@@ -1,14 +1,26 @@
 <?php
 
+use App\Http\Controllers\Auths;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MahasiswaController;
 
-Route::get('/',function(){
-    return view('auth');
-});
+// Login
+Route::get('/login',[Auths::class,'index_login']);
+Route::post('/login',[Auths::class,'login'])->name('login');
 
-Route::get('/dashboard',function(){
-    return view('dashboard', ['title' => 'Dashboard']);
-});
+// SignUp
+// Route::get('/signup',[Auths::class,'index_signup']);
+Route::post('/signup',[Auths::class,'signup'])->name('signup');
+
+// Logout
+Route::post('/logout', [Auths::class,'logout'])->name('logout');
+
+// All Fiture
+Route::get('/', [MahasiswaController::class,'index_dashboard'])->name('dashboard');
+
+// Route::get('/',function(){
+//     return view('dashboard', ['title' => 'Dashboard']);
+// })->middleware('auth')->name('dashboard');
 
 Route::get('/data-transkrip',function(){
     return view('dataTranskrip', ['title' => 'Data Transkrip']);

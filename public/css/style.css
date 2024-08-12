@@ -70,6 +70,7 @@ body > * {
     background-color: white;
     padding: 20px;
     margin-left: 20px;
+    margin-right: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: margin-left 0.3s;
 }
@@ -215,10 +216,17 @@ button[name="logout"] {
     border: none;
 }
 
-.sidebar .active {
-    background-color: red;
+.align-table {
+    border-collapse: collapse;
+    width: 40%; /* Adjust width as needed */
 }
 
-.sidebar .deactive {
-    background-color: blue;
+.align-table td {
+    padding: 0px 7px -75px; /* Space between cells */
+    font-weight: bold;
+}
+
+.colon {
+    text-align:left; /* Center align the colon within its cell */
+    font-weight: bold;
 }
