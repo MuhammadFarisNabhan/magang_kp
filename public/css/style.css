@@ -125,6 +125,140 @@ body > * {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
+/* CSS Keuangan  */
+.tb {
+    width: 600px;
+}
+
+.vv {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:13px;
+    height:10;
+    padding-left: 100px;
+    text-align:right;
+}
+.vv1 {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:13px;
+    height:10;
+}
+.vv2 {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:13px;
+    height:10;
+    text-align: right;
+}
+.vv3{
+    font-size:13px;
+    width: 80px;
+    height: 25px;
+}
+
+.vq {
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:13px;
+    height:10;
+    text-align: center;
+    width: 100%;
+}
+
+.th {
+    color: #000000;
+    font-family:Tahoma;
+    font-weight: bold;
+    background-color:#AEAB9B;
+    font-size:12px;
+}
+
+.th {
+    color: #000000;
+    font-family:Tahoma;
+    font-weight: bold;
+    background-color:#AEAB9B;
+    font-size:12px;
+}
+.tab {
+    width: 100%;
+    border-collapse: collapse;
+}
+.thh {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    text-align: left;
+}
+/* CSS Keuangan  */
+
+/* CSS Nikai Semester Aktif */
+.header-row {
+    background-color: #4CAF50;
+}
+
+.header-cell {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    color: white;
+}
+.header-cell1 {
+    border: 1px solid #ddd;
+    padding: 8px;
+    width: 500px;
+    text-align: center;
+    color: white;
+}
+
+.sub-header-cell {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #66BB6A;
+    color: white;
+}
+
+.data-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.data-row:hover {
+    background-color: #ddd;
+}
+
+.data-cell {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.first-cell {
+    background-color: #e7f0fd;
+}
+.vn {
+    font-size:15px;
+    height:10;
+    text-align:right;
+}
+.vn1 {
+    font-size:15px;
+    height:10;
+    text-align:left;
+}.vn2 {
+    font-size:15px;
+    height:10;
+    padding-left: 20px;
+    width: 40px;
+    text-align:left;
+}
+.vl {
+    font-size:15px;
+    height:10;
+    text-align:left;
+}
+/* CSS Nikai Semester Aktif */
+
+
+
+
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     body {
@@ -219,6 +353,11 @@ button[name="logout"] {
 .align-table {
     border-collapse: collapse;
     width: 40%; /* Adjust width as needed */
+}
+.align-table1 {
+    border-collapse: collapse;
+    width: -20%;
+    font-weight: 700;
 }
 
 .align-table td {
