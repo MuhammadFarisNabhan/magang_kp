@@ -4,84 +4,84 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Mahasiswa;
+use App\Models\User;
+
+use Carbon\Carbon;
+
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class Auths extends Controller
 {
     //
     public function index_login() {
-        return view('auths.login');
+        $programStudi = DB::table('program_studi')->select('id_program_studi','nama_program_studi')->get();
+
+        return view('auths.login', ['data' => $programStudi]);
     }
 
     public function index_signup() {
         return view('auths.signup');
     }
 
-    public function login(Request $request) {
-        $request->validate([
-            'npm'               =>  'required',
-            'password'          =>  'required',
-        ],[
-            'npm.required'      =>  'NPM harus diisi',
-            'password.required' =>  'password harus diisi',
+    public function login(Request $request) : RedirectResponse {        
+        $credentials = $request->validate([
+            'npm'       =>  ['required'],
+            'password'  =>  ['required'],
         ]);
 
-        $infologin = [
-            'npm'               =>  $request->input('npm'),
-            'password'          =>  $request->input('password')
-        ];
+        $logged = Auth::attempt($credentials);
 
-        $user = DB::table('Mahasiswa')->where("npm",$infologin['npm'])->first();
-
-        if($user && $user->password === $infologin['password']){
-            return redirect('/');
-        } else{
-            return back()->withErrors(['npm' => 'NPM atau Password salah']);
+        
+        if($logged){
+            $request->session()->regenerate();
+            return redirect('/');          
+        } else if ($logged == false) {
+            // return back()->withErrors(['npm' => 'NPM atau Password salah'])->withInput();
+            return Redirect::back()->withErrors(['error_message' => 'NPM atau Password salah'])->withInput();
+        } else {
+            return Redirect::back()->withErrors(['error_message' => 'NPM atau Password salah'])->withInput();
         }
     } 
 
     public function signup(Request $request) {
         $validator = Validator::make($request->all(),[
-            'npm'       =>  'required',
-            'nama'      =>  'required',     
-            'email'     =>  'required',
-            'password'  =>  'required',
+            'npm'          =>  'required',
+            'nik'          =>  'required',
+            'program_studi'=>  'required',
+            'nama'         =>  'required',     
+            'email'        =>  'required|email|unique:users',
+            'password'     =>  'required|min:8',
         ]);
-        // $validator = Validator::make($request->all(),[
-        //     'npm'       =>  'required'|'numeric',
-        //     'nama'      =>  'required'|'string'|'max:255',     
-        //     'email'     =>  'required'|'email',
-        //     'password'  =>  'required'|'min:8',
-        // ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
             return redirect()->back()->withErrors($errors)->withInput();
         }
 
-         $validatedData = $validator->validated();
+        $validatedData = $validator->validated(); 
         
-        $user = DB::table('Mahasiswa')->insert([
-            'npm'           => $validatedData['npm'],
-            'nama'          => $validatedData['nama'],
-            'email'         => $validatedData['email'],
-            'password'      => Hash::make($validatedData['password']),
+        
+        $user = DB::table('users')->insert([
+            'npm'               => $validatedData['npm'],
+            'nik'               => $validatedData['nik'],
+            'name'              => $validatedData['nama'],
+            'id_program_studi'  => $validatedData['program_studi'],
+            'email'             => $validatedData['email'],
+            'password'          => Hash::make($validatedData['password']),
+            'created_at'        => Carbon::now(),
+            'updated_at'        => Carbon::now(),
         ]);
-        // $user = Mahasiswa::create([
-        //     'npm'       =>  $validatedData['npm'],
-        //     'nama'      =>  $validatedData['nama'],
-        //     'email'     =>  $validatedData['email'],
-        //     'password'  =>  Hash::make($validatedData['password']),
-        // ]);
 
-        if ($user){
-            Auth::login($user);
-            return redirect('/');
+        if ($user){           
+            return redirect('/login');
         } else {
             return redirect()->back()->withErrors(['error' => 'Failed to create user.'])->withInput();
         }
@@ -92,6 +92,7 @@ class Auths extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('/');
+
+        return redirect()->intended('login');
     }
 }

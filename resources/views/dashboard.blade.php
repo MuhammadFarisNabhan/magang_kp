@@ -1,47 +1,58 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
+    <div class="info-box">
     <div class="profile-info">
         <img src="img/Universitas_Nasional_Logo.png" alt="Profile Picture" width="80" height="80">
-        @foreach ($mahasiswa as $m )
-
-        <table class="align-table" border="1px solid black">
-            <tr>
-                <td class="label">Nama</td>
-                <td class="colon">:</td>
-                <td class="value">{{ $m->nama }}</td>
-            </tr>
-            <tr>
-                <td class="label">NPM</td>
-                <td class="colon">:</td>
-                <td class="value">{{ $m->npm }}</td>
-            </tr>
-            <tr>
-                <td class="label">Prodi</td>
-                <td class="colon">:</td>
-                <td class="value"></td>
-            </tr>
-            <tr>
-                <td class="label">Status</td>
-                <td class="colon">:</td>
-                <td class="value"></td>
-            </tr>
-            <tr>
-                <td class="label">IPK</td>
-                <td class="colon">:</td>
-                <td class="value"></td>
-            </tr>
-            <tr>
-                <td class="label">Saldo</td>
-                <td class="colon">:</td>
-                <td class="value"></td>
-            </tr>
-        </table>
+        @foreach ($mahasiswa["User"] as $m )
+        @foreach ($mahasiswa["Prodi"] as $p )
+            <table class="tb">
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>Nama</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b>{{ $m->name }}</b></td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>NPM</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b>{{ $m->npm }}</b></td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>Prodi</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b>{{ $p->nama_program_studi }}</b></td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>Status</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b></b></td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>IPK</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b></b></td>
+                </tr>
+                <tr class="vn1">
+                    <td>&nbsp;&nbsp;<b>Saldo</b></td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vl"><b></b></td>
+                </tr>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+        @endforeach
         @endforeach
 
     </div>
     <div class="actions">
         <button>Cetak KRS / KPU</button>
-        <button>Data Pribadi</button>
+        <a href="/data-pribadi">
+            <button>Data Pribadi</button>
+        </a>
     </div>
     <div class="info-box">
         <h3>Rencana Pembelajaran (RPS)</h3>

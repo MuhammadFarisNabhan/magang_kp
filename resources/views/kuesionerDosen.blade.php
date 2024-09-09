@@ -1,37 +1,41 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
     <form class="info-box">
-    <table class="tb">
-    <tr class="vn1"> 
-    </tr>
-    <tr class="vn1">
-        <td >Nama: </td>
-        <td colspan="3" align="left">AL-AZRIEL GALIZTAN REVANSYAH ROHMAN</td>
-    </tr>
-    <tr class="vn1">
-        <td>NPM : </td>
-        <td colspan="3" align="left">217064516023</td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-    </table>
     <table>
+        @foreach ($data['user'] as $du)            
+            <tr class="vn1"> 
+            </tr>
+            <tr class="vn1">
+                <td >Nama </td>
+                <td class="vn2">:</td>
+                <td class="vv1">{{ $du->name }}</td>
+            </tr>
+            <tr class="vn1">
+                <td>NPM </td>
+                <td class="vn2">:</td>
+                <td class="vv1">217064516023</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        @endforeach
+        @foreach ($data['userKrs'] as $dkrs)            
             <tr class="vn1">
                 <td>Tahun Akademik</td>
                 <td class="vn2"><b>:</b></td>
-                <td class="vv1">2023/2024</td>
+                <td class="vv1">{{ $dkrs->tahun_akademik }}</td>
             </tr>
             <tr class="vn1">
-                <td>Semester</td>
-                <td class="vn2"><b>:</b></td>
-                <td class="vv1">Genap</td>
-            </tr>
-            <tr class="vn1">
-                <td>Perkuliahan</td>
-                <td class="vn2"><b>:</b></td>
-                <td class="vv1">Reguler</td>
-            </tr>
+                    <td>Semester</td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vv1">{{ $dkrs->semester }}</td>
+                </tr>
+                <tr class="vn1">
+                    <td>Perkuliahan</td>
+                    <td class="vn2"><b>:</b></td>
+                    <td class="vv1">{{ $dkrs->perkuliahan }}</td>
+                </tr>
+        @endforeach
         </table>
     </form>
     <table class="score-table">

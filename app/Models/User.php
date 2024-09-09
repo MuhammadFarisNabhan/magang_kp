@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\ProgramStudi;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -17,10 +21,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'npm',
         'name',
         'email',
         'password',
+        'created_at',
+        'updated_at',
     ];
+
+    public $timestamps = true;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,5 +52,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function programStudi():BelongsTo{
+        return $this->belongsTo(ProgramStudi::class,'id_program_studi','id_program_studi');
     }
 }

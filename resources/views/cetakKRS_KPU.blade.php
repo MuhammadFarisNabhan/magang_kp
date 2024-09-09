@@ -12,25 +12,27 @@
                                 <div class="card-header">
                                     <h5 class="card-title mb-3">CETAK KRS / KPU</h5>
                                 </div>
-                                                                <div class="card-body">
+                                    <div class="card-body">
                                     <div class="col-xxl-6 col-md-6">
                                         <form action="" method="post">
                                             <table class="table table-borderless mb-0">
+                                                @foreach ($data['Krs'] as $dk)
+                                                    
+                                                @endforeach
                                                 <tbody>
                                                     <tr>
-                                                        <th class="ps-0" style="text-align: end;" scope="row">Tahun
-                                                            Akademik :</th>
-                                                        <td class="text-muted">2023/2024</td>
+                                                        <th class="ps-0" style="text-align: end;" scope="row">Tahun Akademik :</th>
+                                                        <td class="text-muted">{{ $dk->tahun_akademik }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" style="text-align: end;" scope="row">Semester :
                                                         </th>
-                                                           <td class="text-muted">Genap</td>
+                                                           <td class="text-muted">{{ $dk->semester }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" style="text-align: end;" scope="row">
                                                             Perkuliahan :</th>
-                                                                <td class="text-muted">Pendek</td>
+                                                        <td class="text-muted">{{ $dk->perkuliahan }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th class="ps-0" style="text-align: end;" scope="row">Cetak :
@@ -41,10 +43,10 @@
                                                                     <select class="form-select rounded-pill mb-3"
                                                                         aria-label="Default select example"
                                                                         name="tipe_cetak">
-                                                                            <option value="1" selected>KRS</option>
+                                                                        <option value="1" selected>KRS</option>
                                                                         <option value="2">KPU UTS</option>
                                                                         <option value="3">KPU UAS</option>
-                                                                            </select>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </td>

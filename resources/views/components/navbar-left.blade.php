@@ -14,4 +14,4 @@
 <x-nav-link href='/rencana-pembelajaran-semester' :active="request()->is('/rencana-pembelajaran-semester')">Rencana Pembelajaran Semester (RPS)</x-nav-link>
 <x-nav-link href='/nilai-semester-aktif' :active="request()->is('/nilai-semester-aktif')">Nilai Semester Aktif</x-nav-link>
 <x-nav-link href='/keuangan' :active="request()->is('/keuangan')">Keuangan</x-nav-link>
-<x-nav-link href='/keluar' :active="request()->is('/keluar')">Keluar</x-nav-link>
+<x-nav-link href='/logout' :active="request()->is('/keluar')">Keluar</x-nav-link>

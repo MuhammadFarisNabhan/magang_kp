@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="header">    
-        {{ $title }}  
+        {{ $title }} 
     </div>
     <div class="container">
         <div class="sidebar" id="sidebar">
@@ -20,9 +20,6 @@
             <button class="toggle-btnn" onclick="toggleSidebar()">☰</button>
             {{ $slot }}         
         </div>
-        {{-- <div class="sidebar" id="sidebar">
-            <x-navbar-right></x-navbar-right>
-        </div> --}}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
