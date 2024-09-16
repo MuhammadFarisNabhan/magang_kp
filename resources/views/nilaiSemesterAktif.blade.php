@@ -1,6 +1,7 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <table>
+    <form class="info-box">
+    <table >
         <tr class="vn">
             <td colspan="4" align="left"><b>NILAI MAHASISWA PERIODE AKTIF</b></td>
         </tr>
@@ -23,6 +24,7 @@
             <td colspan="4">&nbsp;</td>
         </tr>
     </table>
+    </form>
     <table class="score-table">
         <tr class="header-row">
             <th class="header-cell" rowspan="2">No</th>

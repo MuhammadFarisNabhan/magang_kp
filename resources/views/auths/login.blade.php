@@ -111,6 +111,16 @@
                     <label>Password</label>
                     <i class='bx bxs-lock-alt' ></i>
                 </div>
+                <div class="input-box animation" style="--i:20; --j:3;">
+                    <input type="text" name="Alamat" required>
+                    <label>Alamat</label>
+                    <i class='bx bxs-home-alt-2'></i>
+                </div>
+                <div class="input-box animation" style="--i:20; --j:3;">
+                    <input type="number" name="Telephone" required>
+                    <label>Telephone</label>
+                    <i class='bx bx-phone'></i>
+                </div>
                 <button type="submit" class="btn animation" style="--i:21; --j:4;">Sign Up</button>
                 <div class="logreg-link animation" style="--i:22; --j:5;">
                     <p>Already have an account ? <a href="#" class="login-link">Login</a></p>

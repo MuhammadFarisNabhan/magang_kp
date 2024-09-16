@@ -35,8 +35,8 @@ body > * {
 
 .wrapper {
     position: relative;
-    width: 750px;
-    height: 450px;
+    width: 950px;
+    height: 650px;
     background: transparent;
     border: 2px solid #0ef;
     box-shadow: 0 0 25px #0ef; /*Box Shadow kalo jelek diapus aja */
@@ -285,8 +285,8 @@ body > * {
     position: absolute;
     top: -4px;
     right: 0;
-    width: 850px;
-    height: 600px;
+    width: 1050px;
+    height: 800px;
     background: linear-gradient(45deg, #081b29, #0ef);
     border-bottom: 3px solid #0ef;
     transform: rotate(10deg) skewY(40deg);
@@ -304,8 +304,8 @@ body > * {
     position: absolute;
     top: 100%;
     left: 250px;
-    width: 850px;
-    height: 700px;
+    width: 1050px;
+    height: 900px;
     background: #081b29;
     border-top: 3px solid #0ef;
     transform: rotate(0) skewY(0);
