@@ -23,17 +23,17 @@
             <tr class="vn1">
                 <td>Tahun Akademik</td>
                 <td class="vn2"><b>:</b></td>
-                <td class="vv1">{{ $dkrs->tahun_akademik }}</td>
+                <td class="vv1">{{ $dkrs?->tahun_akademik }}</td>
             </tr>
             <tr class="vn1">
                     <td>Semester</td>
                     <td class="vn2"><b>:</b></td>
-                    <td class="vv1">{{ $dkrs->semester }}</td>
+                    <td class="vv1">{{ $dkrs?->semester }}</td>
                 </tr>
                 <tr class="vn1">
                     <td>Perkuliahan</td>
                     <td class="vn2"><b>:</b></td>
-                    <td class="vv1">{{ $dkrs->perkuliahan }}</td>
+                    <td class="vv1">{{ $dkrs?->perkuliahan }}</td>
                 </tr>
         @endforeach
         </table>

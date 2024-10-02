@@ -49,21 +49,23 @@
 
     </div>
     <div class="actions">
-        <button>Cetak KRS / KPU</button>
+        <a href="/cetak-krs-kpu">
+            <button>Cetak KRS / KPU</button>
+        </a>
         <a href="/data-pribadi">
             <button>Data Pribadi</button>
         </a>
     </div>
     <div class="info-box">
         <h3>Rencana Pembelajaran (RPS)</h3>
-        <p>Informasi tentang rencana pembelajaran akan ditampilkan di sini.</p>
+        <p>Informasi tentang rencana pembelajaran akan ditampilkan <a href="/rencana-pembelajaran-semester">di sini.</a></p>
     </div>
     <div class="info-box">
         <h3>Nilai Semester Aktif</h3>
-        <p>Informasi tentang nilai semester aktif akan ditampilkan di sini.</p>
+        <p>Informasi tentang nilai semester aktif akan ditampilkan <a href="/nilai-semester-aktif">di sini.</a></p>
     </div>
     <div class="info-box">
         <h3>Data Keuangan</h3>
-        <p>Informasi tentang data keuangan akan ditampilkan di sini.</p>
+        <p>Informasi tentang data keuangan akan ditampilkan <a href="/keuangan">di sini.</a></p>
     </div>
 </x-layout>

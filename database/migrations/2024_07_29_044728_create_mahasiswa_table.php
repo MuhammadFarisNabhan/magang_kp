@@ -33,7 +33,8 @@ return new class extends Migration
             $table->string('telepon')->nullable();
             $table->text('alamat')->nullable();
             $table->string('image')->nullable();
-            $table->string('id_program_studi')->nullable();
+            $table->string('id_program_studi')->nullable();     
+            $table->string('id_dosen')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -61,13 +62,28 @@ return new class extends Migration
         });
         
         Schema::create('krs', function(Blueprint $table){
-            $table->string('no_krs')->primary();
-            // $table->string('no_khs');
-            $table->string('npm');
+            $table->string('no_krs')->primary();            
             $table->string('kode_matakuliah');
+            // $table->string('id_penilaian');      
+            // $table->string('no_absen');      
+            $table->string('npm');
             $table->string('tahun_akademik');
             $table->string('semester');
-            $table->string('perkuliahan');
+            $table->string('perkuliahan');            
+        });
+
+        Schema::create('penilaian', function(Blueprint $table){
+            $table->string('id_penilaian')->primary();
+            $table->string('no_krs');
+            $table->string('sikap');
+            $table->string('tugas1');
+            $table->string('tugas2');
+            $table->string('rataTugas');
+            $table->string('uts');
+            $table->string('uas'); 
+            $table->string('total'); 
+            $table->string('huruf'); 
+            $table->string('mutu'); 
         });
         
         Schema::create('matakuliah', function(Blueprint $table){            
@@ -93,6 +109,15 @@ return new class extends Migration
             $table->string('telepon');          
         });
 
+        Schema::create('absensi', function(Blueprint $table){
+            $table->string('no_absen')->primary();                        
+            $table->string('no_krs');
+            $table->string('hadir_dosen');
+            $table->string('hadir');
+            $table->string('hadir_tanpa_tatap_muka');
+            $table->string('ijin');
+        });
+
         Schema::table('khs', function($table){
             $table->foreign('npm')
                 ->references('npm')
@@ -113,6 +138,14 @@ return new class extends Migration
                 ->references('kode_matakuliah')
                 ->on('matakuliah')
                 ->onDelete('CASCADE')->onUpdate('CASCADE');                               
+            $table->foreign('no_absen')
+                ->references('no_absen')
+                ->on('absensi')
+                ->onDelete('CASCADE')->onUpdate('CASCADE');                               
+            $table->foreign('id_penilaian')
+                ->references('id_penilaian')
+                ->on('penilaian')
+                ->onDelete('CASCADE')->onUpdate('CASCADE');                               
         });
         
         Schema::table('matakuliah', function($table){            
@@ -131,8 +164,13 @@ return new class extends Migration
                 ->references('id_program_studi')
                 ->on('program_studi')
                 ->onDelete('CASCADE')->onUpdate('CASCADE');
-                
+            $table->foreign('id_dosen')
+                ->references('id_dosen')
+                ->on('dosen')
+                ->onDelete('CASCADE')->onUpdate('CASCADE');                
         });
+
+        // Schema::table('penilaian')
     }
 
     /**
@@ -140,19 +178,20 @@ return new class extends Migration
      */
     public function down(): void
     {           
-        Schema::table('krs',function(Blueprint $table){
-            $table->dropForeign(['npm']);
-            // $table->dropForeign(['no_khs']);
-            $table->dropForeign(['kode_matakuliah']);
-            $table->drop('krs');
-        });
-
         Schema::table('khs',function(Blueprint $table){
             $table->dropForeign(['npm']);
             $table->dropForeign(['no_krs']);
             $table->drop('khs');
         });
-        
+
+        Schema::table('krs',function(Blueprint $table){
+            $table->dropForeign(['npm']);            
+            $table->dropForeign(['kode_matakuliah']);
+            $table->dropForeign(['no_absen']);
+            $table->dropForeign(['id_penilaian']);
+            $table->drop('krs');
+        });
+
         Schema::table('matakuliah',function(Blueprint $table){
             $table->dropForeign(['id_program_studi']);
             $table->dropForeign(['id_dosen']);
@@ -161,13 +200,15 @@ return new class extends Migration
 
         Schema::table('users',function(Blueprint $table){
             $table->dropForeign(['id_program_studi']);            
+            $table->dropForeign(['id_dosen']);            
             $table->drop('users');
         });
 
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
 
-        // Schema::dropIfExists('mahasiswa');
+        Schema::dropIfExists('absensi');
+        Schema::dropIfExists('penilaian');
         Schema::dropIfExists('program_studi');
         Schema::dropIfExists('dosen');
         Schema::dropIfExists('sessions');

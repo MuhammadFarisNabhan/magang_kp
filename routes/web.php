@@ -36,9 +36,7 @@ Route::get('/jadwal-PA', function(){
     return view('jadwalPA', ['title' => 'Jadwal PA']);
 })->middleware('auth');
  
-Route::get('/berita-acara-PA', function(){
-    return view('beritaAcaraPA', ['title' => 'Berita Acara PA']);
-})->middleware('auth');
+Route::get('/berita-acara-PA', [MahasiswaController::class,'beritaAcaraPA'])->name('beritaAcaraPA')->middleware('auth');
  
 Route::get('/cetak-krs-kpu',[MahasiswaController::class,"cetakKrsKpu"])->name("cetakKrsKpu")->middleware('auth');
  
@@ -55,9 +53,11 @@ Route::get('/kuesioner-kepuasan', function(){
     return view('kuesionerKepuasan', ['title' => 'Kuesioner Kepuasan']);
 })->middleware('auth');
  
-Route::get('/kehadiran-kuliah', function(){
-    return view('kehadiranKuliah', ['title' => 'Kehadiran Kuliah']);
-})->middleware('auth');
+Route::get("/kehadiran-kuliah", [MahasiswaController::class,'kehadiranKuliah'])->name('kehadiranKuliah')->middleware('auth');
+
+// Route::get('/kehadiran-kuliah', function(){
+//     return view('kehadiranKuliah', ['title' => 'Kehadiran Kuliah']);
+// })->middleware('auth');
  
 Route::get('/rencana-pembelajaran-semester',[MahasiswaController::class,'rps'])->name('rps')->middleware('auth');
  

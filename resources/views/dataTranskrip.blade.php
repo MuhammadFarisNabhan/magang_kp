@@ -1,6 +1,7 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
     <div class="info-box">
+        {{-- Table Informasi --}}
         <table class="">
             <tr>
                 <td colspan="4">&nbsp;</td>
@@ -30,12 +31,13 @@
                     <td class="vl"><b></b></td>
                 </tr>
             @endforeach
-        <tr>
-            <td colspan="4">&nbsp;</td>
-        </tr>
+            <tr>
+                <td colspan="4">&nbsp;</td>
+            </tr>
         </table>
     </div>
     
+    {{-- Table Data Transkrip --}}
     <table class="score-table">
         <tr class="header-row">
             <th class="header-cell1">No</th>
@@ -55,22 +57,6 @@
             <td class="data-cell">{{ $d->nilai }}</td>
             <td class="data-cell">dsadsad</td>
         </tr>
-        @endforeach
-        {{-- <tr class="data-row">
-            <td class="data-cell">asdkjsa</td>
-            <td class="data-cell">asdasdas</td>
-            <td class="data-cell">asdksand</td>
-            <td class="data-cell">asdkasn</td>
-            <td class="data-cell">dasdsadsa</td>
-            <td class="data-cell">dsadsad</td>
-        </tr>
-        <tr class="data-row">
-            <td class="data-cell">asdkjsa</td>
-            <td class="data-cell">asdasdas</td>
-            <td class="data-cell">asdksand</td>
-            <td class="data-cell">asdkasn</td>
-            <td class="data-cell">dasdsadsa</td>
-            <td class="data-cell">dsadsad</td>
-        </tr>        --}}
+        @endforeach        
     </table>
 </x-layout>
