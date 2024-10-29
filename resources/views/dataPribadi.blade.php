@@ -51,7 +51,6 @@
             @endforeach
             <tr>
                 <td class="vn" colspan="2"><input name="simpan" type="submit" value="SIMPAN" id="simpan" class="bc" tabindex="5"></td>
-                {{-- <td class="vl"><input type="button" name="reset" value=" CLOSE " onclick="self.close();" class="bc" tabindex="6"></td> --}}
             </tr>
             <tr>
                 <td colspan="4">&nbsp;</td>

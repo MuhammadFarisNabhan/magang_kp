@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\User;
-
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\select;
 
 class MahasiswaController extends Controller
 {
@@ -110,17 +110,6 @@ class MahasiswaController extends Controller
         ];
 
         return view('kuesionerDosen',['title' => 'Kuesioner Dosen'], ['data' => $data]);
-    }
-
-    public function cetakKrsKpu(){
-        $userId     = DB::table('users')->where('id', Auth::id())->get();
-        $userKrs    = DB::table('krs')->where('npm',$userId->select('npm'))->get();
-
-        $data = [
-            'Krs' => $userKrs
-        ];
-
-        return view('cetakKRS_KPU',['title' => 'Cetak KRS atau KPU'],['data' => $data]);
     }
 
     public function rps(){

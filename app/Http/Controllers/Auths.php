@@ -22,8 +22,7 @@ class Auths extends Controller
 {
     //
     public function index_login() {
-        $programStudi = DB::table('program_studi')->select('id_program_studi','nama_program_studi')->get();
-
+        $programStudi = DB::table('program_studi')->select('id_program_studi','nama_program_studi')->get();        
         return view('auths.login', ['data' => $programStudi]);
     }
 
@@ -38,13 +37,11 @@ class Auths extends Controller
         ]);
 
         $logged = Auth::attempt($credentials);
-
         
         if($logged){
             $request->session()->regenerate();
             return redirect('/');          
         } else if ($logged == false) {
-            // return back()->withErrors(['npm' => 'NPM atau Password salah'])->withInput();
             return Redirect::back()->withErrors(['error_message' => 'NPM atau Password salah'])->withInput();
         } else {
             return Redirect::back()->withErrors(['error_message' => 'NPM atau Password salah'])->withInput();
@@ -55,8 +52,10 @@ class Auths extends Controller
         $validator = Validator::make($request->all(),[
             'npm'          =>  'required',
             'nik'          =>  'required',
-            'program_studi'=>  'required',
             'nama'         =>  'required',     
+            'prodi'        =>  'required',
+            'alamat'       =>  'required',     
+            'telephon'     =>  'required',     
             'email'        =>  'required|email|unique:users',
             'password'     =>  'required|min:8',
         ]);
@@ -73,7 +72,9 @@ class Auths extends Controller
             'npm'               => $validatedData['npm'],
             'nik'               => $validatedData['nik'],
             'name'              => $validatedData['nama'],
-            'id_program_studi'  => $validatedData['program_studi'],
+            'id_program_studi'  => $validatedData['prodi'],
+            'alamat'            => $validatedData['alamat'],
+            'telepon'           => $validatedData['telephon'],
             'email'             => $validatedData['email'],
             'password'          => Hash::make($validatedData['password']),
             'created_at'        => Carbon::now(),

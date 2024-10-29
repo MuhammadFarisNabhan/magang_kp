@@ -6,14 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login section</title>
     <link rel="stylesheet" href="css/style2.css">
-    {{-- <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    @include('auths.message-error')
-    {{-- <div class="container"></div> --}}
-
-    
     <div class="wrapper">
         <span class="bg-animate"></span>
         <span class="bg-animate2"></span>
@@ -53,13 +48,13 @@
             <form action="{{ route('signup') }}" method="POST">
                 {{ csrf_field() }}
                 <div class="input-box animation" style="--i:18; --j:1;">
-                    <input type="number" name="nik" required>
-                    <label>NIK</label>
+                    <input type="number" name="npm" required>
+                    <label>NPM</label>
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box animation" style="--i:18; --j:1;">
-                    <input type="number" name="npm" required>
-                    <label>NPM</label>
+                    <input type="number" name="nik" required>
+                    <label>NIK</label>
                     <i class='bx bxs-user'></i>
                 </div>
                 <div class="input-box animation" style="--i:19; --j:2;">
@@ -72,27 +67,30 @@
                     <label>Email</label>
                     <i class='bx bxs-envelope' ></i>
                 </div>
-                <div>
-                    <select class="input-box animation" style="--i:19; --j:2;" name="program_studi" required>
-                        {{-- Option tag dynamically display from database --}}
-                        <option value="" selected>Program Studi</option>
-                         @foreach ($data as $p)  
-                            <option value="{{ $p->id_program_studi }}">{{ $p->nama_program_studi }}</option>                            
-                        @endforeach
-                    </select>
-                </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
                     <input type="password" name="password" required>
                     <label>Password</label>
                     <i class='bx bxs-lock-alt' ></i>
                 </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
-                    <input type="text" name="Alamat" required>
+                    <input type="text" name="alamat" required>
                     <label>Alamat</label>
                     <i class='bx bxs-home-alt-2'></i>
                 </div>
+                <div class="input-box animation prodi_box" style="--i:20; --j:3;">
+                    <select name="prodi" class="input-box prodi" required>
+                        <option value={{ null }}>Program Studi</option>
+                        @foreach ($data as  $d)                            
+                            <option value={{ $d->id_program_studi }}>{{ $d->nama_program_studi }}</option>
+                        @endforeach
+                        {{-- <option value="Address 1">Informatika</option>
+                        <option value="Address 1">Sistem Informasi</option> --}}
+                    </select>
+                    <label>Program Studi</label>
+                    <i class='bx bxs-book'></i>
+                </div>
                 <div class="input-box animation" style="--i:20; --j:3;">
-                    <input type="number" name="Telephone" required>
+                    <input type="number" name="telephon" required>
                     <label>Telephone</label>
                     <i class='bx bx-phone'></i>
                 </div>
@@ -110,7 +108,6 @@
     </div>
 
     <script src="./Js/script.js"></script>
-    <script src="./Js/modal.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 </body>
 </html>

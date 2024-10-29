@@ -9,5 +9,13 @@ class ProgramStudi extends Model
 {
     use HasFactory;
 
-    protected $table = 'program_studi';
+    protected $_table = 'program_studi';
+    protected $_fillable = [
+        'id_program_studi',
+        'nama_program_studi',    
+        'fakultas'
+    ];
+
+    protected $_timestamps = false;
+    
 }

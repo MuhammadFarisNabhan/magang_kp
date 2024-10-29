@@ -61,15 +61,16 @@ return new class extends Migration
             $table->string('nilai');
         });
         
-        Schema::create('krs', function(Blueprint $table){
+        Schema::create('krs', function(Blueprint $table){            
             $table->string('no_krs')->primary();            
             $table->string('kode_matakuliah');
-            // $table->string('id_penilaian');      
-            // $table->string('no_absen');      
+            $table->string('id_penilaian')->nullable();      
+            $table->string('no_absen')->nullable();      
             $table->string('npm');
-            $table->string('tahun_akademik');
-            $table->string('semester');
-            $table->string('perkuliahan');            
+            $table->string('tahun_akademik')->nullable();
+            $table->string('semester')->nullable();
+            $table->string('perkuliahan')->nullable();    
+            $table->enum('status', ['berjalan','selesai','diambil'])->default('diambil');
         });
 
         Schema::create('penilaian', function(Blueprint $table){
@@ -117,6 +118,13 @@ return new class extends Migration
             $table->string('hadir_tanpa_tatap_muka');
             $table->string('ijin');
         });
+        
+        // Schema::create('kelas', function(Blueprint $table){
+        //     $table->string('no_kelas')->primary();                        
+        //     $table->string('kelas');
+        //     $table->string('pertemuan');            
+        // });
+
 
         Schema::table('khs', function($table){
             $table->foreign('npm')
