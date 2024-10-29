@@ -1,5 +1,30 @@
 <x-layout>
     <x-slot:title>{{ $title }}</x-slot:title>
+    <form class="info-box">
+    <table >
+        <tr class="vn">
+            <td colspan="4" align="left"><b>NILAI MAHASISWA PERIODE AKTIF</b></td>
+        </tr>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr class="vn">
+            <td><b>Tahun Akademik : </b></td>
+            <td class="vl"><b>2023/2024</b></td>
+        </tr>
+        <tr class="vn">
+            <td><b>Semester : </b></td>
+            <td class="vl"><b>Genap</b></td>
+        </tr>
+        <tr class="vn"> 
+            <td><b>Perkuliahan : </b></td>
+            <td class="vl"><b>Reguler</b></td>
+        </tr>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+    </table>
+    </form>
     <div class="info-box">
         <table>
             @foreach ($data['dataMatkul'] as $dm )

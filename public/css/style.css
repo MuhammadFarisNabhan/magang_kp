@@ -256,7 +256,13 @@ body > * {
 }
 /* CSS Nikai Semester Aktif */
 
-
+/* CSS KRS */
+.k1 {
+    width: 100%;
+    font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+    font-size:13px;
+    font-weight:normal;
+}
 
 
 /* Media Queries for Responsiveness */

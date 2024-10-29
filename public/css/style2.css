@@ -146,9 +146,9 @@ body > * {
 
 .input-box label {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 0;
-    transform: translateY(-50%);
+    transform: translateY(-45%);
     font-size: 16px;
     color: white;
     pointer-events: none;
@@ -157,7 +157,7 @@ body > * {
 
 .input-box input:focus ~ label,
 .input-box input:valid ~ label {
-    top: -5px;
+    top: -1px;
     color: #0ef;
 }
 
@@ -297,6 +297,10 @@ body > * {
 
 .wrapper .bg-animate {
     position: absolute;
+    top: -4px;
+    right: 0;
+    width: 1050px;
+    height: 800px;
     top: -20px;
     right: 0px;
     width: 940px;
@@ -317,6 +321,9 @@ body > * {
 .wrapper .bg-animate2 {
     position: absolute;
     top: 100%;
+    left: 250px;
+    width: 1050px;
+    height: 900px;
     left: 230px;
     width: 850px;
     height: 760px;
@@ -388,4 +395,83 @@ body > * {
     background-color: #ca2626;
     color: rgb(239, 235, 235)
     
+}
+
+.prodi {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;    
+    border-bottom: 2px solid #fff;  
+    text-align: justify;  
+    font-weight: 500;
+    height: 50px;
+}
+
+.input-box select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.input-box select::-ms-expand{
+    display: none;
+}
+
+select {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    padding: 0;
+    transition: 0.5s;
+}
+
+select.prodi option{
+    background-color: #081b29;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    padding: 20px;
+}
+
+.input-box.prodi_box label{
+    transition: 0.5s;
+    pointer-events: none;
+    margin-top:7px;
+    position: absolute;
+    top: 45%;
+    left: 0;
+    transform: translateY(-45%);    
+}
+
+.input-box select:focus ~ label,
+.input-box select:valid ~ label{
+    top: -1px;
+    color: #0ef;
+}
+
+
+.input-box.prodi_box i {
+    position: absolute;    
+    transform: translate(0%,-30%);
+    font-size: 17px;
+}
+
+.input-box select:focus,
+.input-box select:valid{
+    border-bottom-color: #0ef;
+}
+
+.input-box select:focus ~ i,
+.input-box select:valid ~ i {
+    color: #0ef;
+}
+
+select option{
+    padding: 10px;
 }
