@@ -93,6 +93,7 @@ return new class extends Migration
             $table->string('sks');
             $table->string('id_dosen')->nullable();
             $table->string('id_program_studi');
+            $table->string('no_kelas')->nullable();
         });
         
         Schema::create('program_studi', function(Blueprint $table){            
@@ -119,12 +120,12 @@ return new class extends Migration
             $table->string('ijin');
         });
         
-        // Schema::create('kelas', function(Blueprint $table){
-        //     $table->string('no_kelas')->primary();                        
-        //     $table->string('kelas');
-        //     $table->string('pertemuan');            
-        // });
-
+        Schema::create('kelas', function(Blueprint $table){
+            $table->string('no_kelas')->primary();                        
+            $table->string('kelas');
+            $table->string('tempat');            
+            $table->string('waktu');            
+        });
 
         Schema::table('khs', function($table){
             $table->foreign('npm')
@@ -165,6 +166,10 @@ return new class extends Migration
                 ->references('id_dosen')
                 ->on('dosen')
                 ->onDelete('CASCADE')->onUpdate('CASCADE');                
+            $table->foreign('no_kelas')
+                ->references('no_kelas')
+                ->on('kelas')
+                ->onDelete('CASCADE')->onUpdate('CASCADE');                
         });
         
         Schema::table('users', function($table){
@@ -203,8 +208,9 @@ return new class extends Migration
         Schema::table('matakuliah',function(Blueprint $table){
             $table->dropForeign(['id_program_studi']);
             $table->dropForeign(['id_dosen']);
+            $table->dropForeign(['no_kelas']);
             $table->drop('matakuliah');
-        });
+        });        
 
         Schema::table('users',function(Blueprint $table){
             $table->dropForeign(['id_program_studi']);            
@@ -219,6 +225,7 @@ return new class extends Migration
         Schema::dropIfExists('penilaian');
         Schema::dropIfExists('program_studi');
         Schema::dropIfExists('dosen');
+        Schema::dropIfExists('kelas');
         Schema::dropIfExists('sessions');
     }
 };

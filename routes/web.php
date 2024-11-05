@@ -29,12 +29,9 @@ Route::get('/data-transkrip',[MahasiswaController::class,'data_transkrip'])->nam
 Route::get('/history-nilai', function(){
     return view('historyNilai', ['title' => 'History Nilai']);
 })->middleware('auth');
- 
-Route::get('/jadwal-pribadi', function(){
-    return view('jadwalPribadi', ['title' => 'Jadwal Pribadi']);
-})->middleware('auth');
 
-
+Route::get('/jadwal-pribadi',[MahasiswaController::class,'jadwalPribadi'])->name('jadwalPribadi')->middleware('auth');
+Route::post('/jadwal-pribadi',[MahasiswaController::class,'getJadwal'])->name('getJadwal')->middleware('auth');
 
 // ==========================================================================================================================
 // KRS

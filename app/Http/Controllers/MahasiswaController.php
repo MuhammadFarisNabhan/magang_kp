@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\KRS;
 use App\Models\Mahasiswa;
 use App\Models\User;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -14,6 +16,16 @@ use function Laravel\Prompts\select;
 
 class MahasiswaController extends Controller
 {
+    public function infoSemester_Thakad(){
+        $getData = new KRS();
+        $data = [
+            'tahun_akademik'    => $getData->buatTahunAkademik(),
+            'semester'          => $getData->getSemester(),
+        ];
+
+        return $data;
+    }
+
     public function index_dashboard(){     
         $userId = DB::table('users')->where('id', Auth::id())->get();
         $programStudi = DB::table('program_studi')->where('id_program_studi',$userId->select('id_program_studi'))->get();
@@ -168,5 +180,131 @@ class MahasiswaController extends Controller
         $userData   = DB::table('krs');
 
         return view('kehadiranKuliah', ['title'=>'Kehadiran Kuliah']);
+    }
+
+    public function jadwalPribadi(){
+        $userId = DB::table('users')->where('id', Auth::id())->select('npm')->first();
+        $jadwalPribadi = DB::table('users')
+            ->join('krs','users.npm','=','krs.npm')
+            ->join('matakuliah','krs.kode_matakuliah','=','matakuliah.kode_matakuliah')
+            ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')
+            ->where('krs.status','=','berjalan')
+            ->where('users.npm','=',$userId->npm)
+            ->select('waktu','tempat','matakuliah.kode_matakuliah','matakuliah.nama','semester','tahun_akademik','perkuliahan','kelas','sks')
+            ->get(); 
+
+        $timeRanges = [];
+
+        foreach ($jadwalPribadi as $index) {
+            $waktu = $index->waktu;
+            list($waktuAwal, $waktuAkhir)   = explode(' - ', $waktu);
+            list($hari, $waktuAwal_)        = explode(' ', $waktuAwal);
+            $timeRanges[] = (object) [
+                'hari'              => $hari,
+                'awal'              => $waktuAwal_,
+                'akhir'             => $waktuAkhir,
+                'tempat'            => $index->tempat,
+                'kode_matakuliah'   => $index->kode_matakuliah,
+                'nama'              => $index->nama,
+                'semester'          => $index->semester,
+                'tahun_akademik'    => $index->tahun_akademik,
+                'perkuliahan'       => $index->perkuliahan,
+                'kelas'             => $index->kelas,
+                'sks'               => $index->sks,
+            ];
+        }
+        
+        $data = [
+            'dataJadwalPribadi' => $timeRanges,
+            'information'       => $this->infoSemester_Thakad(),
+        ];        
+
+        return view('jadwalPribadi', ['title' => 'Jadwal Pribadi'],['jadwalPribadi' => $data]);
+    }
+
+    public function getJadwal(Request $request){
+        $kategori = $request->input('kategori');
+        $userId = DB::table('users')->where('id', Auth::id())->select('npm')->first();
+        $jadwalPribadi = DB::table('users')
+            ->join('krs','users.npm','=','krs.npm')
+            ->join('matakuliah','krs.kode_matakuliah','=','matakuliah.kode_matakuliah')
+            ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')
+            ->where('krs.status','=','berjalan')
+            ->where('users.npm','=',$userId->npm)
+            ->select('waktu','tempat','matakuliah.kode_matakuliah','matakuliah.nama','semester','tahun_akademik','perkuliahan','kelas','sks')
+            ->get();      
+
+        $timeRanges = [];
+
+        foreach ($jadwalPribadi as $index) {
+            $waktu = $index->waktu;
+            list($waktuAwal, $waktuAkhir) = explode(' - ', $waktu);
+
+            $timeRanges[] = (object) [
+                'awal' => $waktuAwal,
+                'akhir' => $waktuAkhir,
+                'tempat' => $index->tempat,
+                'kode_matakuliah' => $index->kode_matakuliah,
+                'nama' => $index->nama,
+                'semester' => $index->semester,
+                'tahun_akademik' => $index->tahun_akademik,
+                'perkuliahan' => $index->perkuliahan,
+                'kelas' => $index->kelas,
+                'sks' => $index->sks,
+            ];
+        }
+
+        $data = [
+            'dataJadwalPribadi' => $timeRanges,
+        ];
+
+        switch($kategori){
+            case 'kuliah':
+                $jadwalPribadi = DB::table('users')
+                    ->join('krs','users.npm','=','krs.npm')
+                    ->join('matakuliah','krs.kode_matakuliah','=','matakuliah.kode_matakuliah')
+                    ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')
+                    ->where('krs.status','=','berjalan')
+                    ->where('users.npm','=',$userId->npm)
+                    ->select('waktu','tempat','matakuliah.kode_matakuliah','matakuliah.nama','semester','tahun_akademik','perkuliahan','kelas','sks')
+                    ->get();      
+
+                $timeRanges = [];
+
+                foreach ($jadwalPribadi as $index) {
+                    $waktu = $index->waktu;
+                    list($waktuAwal, $waktuAkhir) = explode(' - ', $waktu);
+                    list($hari, $waktuAwal_)        = explode(' ', $waktuAwal);
+
+                    $timeRanges[] = (object) [
+                            'hari'              => $hari,
+                            'awal'              => $waktuAwal,
+                            'akhir'             => $waktuAkhir,
+                            'tempat'            => $index->tempat,
+                            'kode_matakuliah'   => $index->kode_matakuliah,
+                            'nama'              => $index->nama,
+                            'semester'          => $index->semester,
+                            'tahun_akademik'    => $index->tahun_akademik,
+                            'perkuliahan'       => $index->perkuliahan,
+                            'kelas'             => $index->kelas,
+                            'sks'               => $index->sks,
+                        ];
+                    }
+
+                    $data = [
+                        'dataJadwalPribadi' => $timeRanges,
+                    ];
+                break;
+            case 'uts':
+
+                break;
+            case 'uas':
+                break;
+            default:
+                return redirect('/jadwal-pribadi')->back()->withErrors(['error'=>'Terjadi masalah tak sistem.']);
+                break;
+        }
+        
+        return view('jadwalPribadi', ['title' => 'Jadwal Pribadi'],['jadwalPribadi' => $data]);
     }
 }

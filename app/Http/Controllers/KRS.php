@@ -21,18 +21,36 @@ class KRS extends Controller
         }
     }
 
+    public function getSemester(){
+        $ganjilStart = Carbon::createFromDate(date('Y'), 9, 2);
+        $genapStart = Carbon::createFromDate(date('Y'), 3, 3);
+
+        $today = Carbon::now();
+
+        if ($today->greaterThanOrEqualTo($ganjilStart) && $today->lessThan($genapStart)) {
+            return 'Ganjil';
+        } elseif ($today->greaterThanOrEqualTo($genapStart)) {
+            return 'Genap';
+        } else {            
+            return 'Belum Memasuki Semester';
+        }
+    }
+
     public function mengisiKRS(){
         $mataKuliah = DB::table('matakuliah')
-        ->join('dosen', 'matakuliah.id_dosen', '=', 'dosen.id_dosen')
-        ->join('program_studi', 'matakuliah.id_program_studi','=','program_studi.id_program_studi')
-        ->select('nama_dosen','nama','kode_matakuliah', 'sks')
-        ->get();
+            ->join('dosen', 'matakuliah.id_dosen', '=', 'dosen.id_dosen')
+            ->join('program_studi', 'matakuliah.id_program_studi','=','program_studi.id_program_studi')
+            ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')
+            ->select('nama_dosen','nama','kode_matakuliah', 'sks','kelas','tempat','waktu')
+            ->get();
 
         $mataKuliah_diambil = DB::table('users')
-        ->join('krs','users.npm','=','krs.npm')
-        ->join('matakuliah', 'krs.kode_matakuliah','=','matakuliah.kode_matakuliah')
-        ->join('dosen', 'matakuliah.id_dosen', '=', 'dosen.id_dosen')        
-        ->get();        
+            ->join('krs','users.npm','=','krs.npm')
+            ->join('matakuliah', 'krs.kode_matakuliah','=','matakuliah.kode_matakuliah')
+            ->join('dosen', 'matakuliah.id_dosen', '=', 'dosen.id_dosen') 
+            ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')  
+            ->select('nama_dosen','nama','matakuliah.kode_matakuliah', 'sks','kelas','tempat','waktu','status')
+            ->get();                
 
         $data = [
             'mataKuliah' => $mataKuliah,
@@ -50,11 +68,13 @@ class KRS extends Controller
         ]);
         $ambilMk = $request->input('ambilMk');
         
-        list($kode_matakuliah, $nama, $sks, $nama_dosen) = explode('_', $ambilMk);
+        list($kode_matakuliah, $kelas, $nama, $jadwal , $sks, $nama_dosen) = explode('_', $ambilMk);
         
         $data = [
             'kode_matakuliah'   => $kode_matakuliah,
+            'kelas'             => $kelas,
             'matakuliah'        => $nama,
+            'jadwal'            => $jadwal,
             'sks'               => $sks,
             'nama_dosen'        => $nama_dosen,
         ];
@@ -63,7 +83,7 @@ class KRS extends Controller
         ->join('matakuliah', 'krs.kode_matakuliah','=','matakuliah.kode_matakuliah')        
         ->sum('matakuliah.sks');
 
-        if($getSks <= 24 && $getSks + $sks <= 24){
+        if($getSks <= 24 && $getSks + (int)$sks <= 24){
             $tahunAkademik = $this->buatTahunAkademik();
             $inserted = DB::table('krs')->where('krs.npm','=',$userNpm->npm)
             ->insert([
@@ -72,7 +92,7 @@ class KRS extends Controller
                 'id_penilaian'    => null,
                 'no_absen'        => null,
                 'tahun_akademik'  => $tahunAkademik,
-                'semester'        => null,            
+                'semester'        => $this->getSemester(),            
                 'perkuliahan'     => null,            
                 'npm'             => $userNpm->npm
             ]); 
