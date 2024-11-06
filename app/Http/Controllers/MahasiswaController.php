@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\KRS;
 use App\Models\Mahasiswa;
 use App\Models\User;
@@ -31,8 +32,9 @@ class MahasiswaController extends Controller
         $programStudi = DB::table('program_studi')->where('id_program_studi',$userId->select('id_program_studi'))->get();
 
         $mahasiswa = [
-            'User'  => $userId,
-            'Prodi' => $programStudi,
+            'npm'   => $userId->value('npm'),
+            'nama'  => Crypt::decryptString($userId->value('name')),
+            'prodi' => Crypt::decryptString($programStudi->value('nama_program_studi')),
         ];
 
         return view('dashboard', ['title' => 'Dashboard'], ['mahasiswa' => $mahasiswa]);
@@ -75,8 +77,13 @@ class MahasiswaController extends Controller
         $programStudi = DB::table('program_studi')->where('id_program_studi',$userId->select('id_program_studi'))->get();
 
         $mahasiswa = [
-            $userId, 
-            $programStudi,
+            'nama'          => Crypt::decryptString($userId->value('name')), 
+            'npm'           => $userId->value('npm'),
+            'prodi'         => Crypt::decryptString($programStudi->value('nama_program_studi')),
+            'email'         => Crypt::decryptString($userId->value('email')),
+            'alamat'        => Crypt::decryptString($userId->value('alamat')),
+            'telepon'       => Crypt::decryptString($userId->value('telepon')),
+            'nik'           => Crypt::decryptString($userId->value('nik')),            
         ];
 
         return view('dataPribadi',['title' => 'Data Pribadi'], ['mahasiswa' => $mahasiswa]);
@@ -96,17 +103,16 @@ class MahasiswaController extends Controller
             return redirect()->back()->withErrors($errors)->withInput();
         }
 
-        $validatedData = $validator->validated(); 
-
+        $validatedData = $validator->validated();         
         $user = DB::table('users')->update([
-            'alamat'    =>  $validatedData['alamat'],
-            'telepon'   =>  $validatedData['hp'],
-            'email'     =>  $validatedData['email'],
-            'nik'       =>  $validatedData['nik'],
+            'alamat'    =>  Crypt::encryptString($validatedData['alamat']),
+            'telepon'   =>  Crypt::encryptString($validatedData['hp']),
+            'email'     =>  Crypt::encryptString($validatedData['email']),
+            'nik'       =>  Crypt::encryptString($validatedData['nik']),
         ]);
 
         if($user){
-            return redirect('/data-pribadi')->with(['success' => 'Berhasil update data..']);
+            return redirect('/data-pribadi')->with(['success' => 'Pembaruan Sukses.']);
         } else {
             return redirect()->refresh()->withErrors(['error' => 'Gagal update data..']);
         }
@@ -195,22 +201,22 @@ class MahasiswaController extends Controller
 
         $timeRanges = [];
 
-        foreach ($jadwalPribadi as $index) {
-            $waktu = $index->waktu;
+        foreach ($jadwalPribadi as $index => $val) {              
+            $waktu = Crypt::decryptString($val->waktu);        
             list($waktuAwal, $waktuAkhir)   = explode(' - ', $waktu);
             list($hari, $waktuAwal_)        = explode(' ', $waktuAwal);
             $timeRanges[] = (object) [
                 'hari'              => $hari,
                 'awal'              => $waktuAwal_,
                 'akhir'             => $waktuAkhir,
-                'tempat'            => $index->tempat,
-                'kode_matakuliah'   => $index->kode_matakuliah,
-                'nama'              => $index->nama,
-                'semester'          => $index->semester,
-                'tahun_akademik'    => $index->tahun_akademik,
-                'perkuliahan'       => $index->perkuliahan,
-                'kelas'             => $index->kelas,
-                'sks'               => $index->sks,
+                'tempat'            => Crypt::decryptString($val->tempat),
+                'kode_matakuliah'   => Crypt::decryptString($val->kode_matakuliah),
+                'nama'              => Crypt::decryptString($val->nama),
+                'semester'          => $val->semester,
+                'tahun_akademik'    => ($val->tahun_akademik),
+                'perkuliahan'       => ($val->perkuliahan),
+                'kelas'             => Crypt::decryptString($val->kelas),
+                'sks'               => Crypt::decryptString($val->sks),
             ];
         }
         
@@ -236,21 +242,21 @@ class MahasiswaController extends Controller
 
         $timeRanges = [];
 
-        foreach ($jadwalPribadi as $index) {
-            $waktu = $index->waktu;
+        foreach ($jadwalPribadi as $index => $val) {
+            $waktu = Crypt::decryptString($val->waktu);
             list($waktuAwal, $waktuAkhir) = explode(' - ', $waktu);
 
             $timeRanges[] = (object) [
                 'awal' => $waktuAwal,
                 'akhir' => $waktuAkhir,
-                'tempat' => $index->tempat,
-                'kode_matakuliah' => $index->kode_matakuliah,
-                'nama' => $index->nama,
-                'semester' => $index->semester,
-                'tahun_akademik' => $index->tahun_akademik,
-                'perkuliahan' => $index->perkuliahan,
-                'kelas' => $index->kelas,
-                'sks' => $index->sks,
+                'tempat' => Crypt::decryptString($val->tempat),
+                'kode_matakuliah' => Crypt::decryptString($val->kode_matakuliah),
+                'nama' => Crypt::decryptString($val->nama),
+                'semester' => ($val->semester),
+                'tahun_akademik' => ($val->tahun_akademik),
+                'perkuliahan' => ($val->perkuliahan),
+                'kelas' => Crypt::decryptString($val->kelas),
+                'sks' => Crypt::decryptString($val->sks),
             ];
         }
 
@@ -271,28 +277,29 @@ class MahasiswaController extends Controller
 
                 $timeRanges = [];
 
-                foreach ($jadwalPribadi as $index) {
-                    $waktu = $index->waktu;
+                foreach ($jadwalPribadi as $index => $val) {
+                    $waktu = Crypt::decryptString($val->waktu);
                     list($waktuAwal, $waktuAkhir) = explode(' - ', $waktu);
                     list($hari, $waktuAwal_)        = explode(' ', $waktuAwal);
 
                     $timeRanges[] = (object) [
                             'hari'              => $hari,
-                            'awal'              => $waktuAwal,
+                            'awal'              => $waktuAwal_,
                             'akhir'             => $waktuAkhir,
-                            'tempat'            => $index->tempat,
-                            'kode_matakuliah'   => $index->kode_matakuliah,
-                            'nama'              => $index->nama,
-                            'semester'          => $index->semester,
-                            'tahun_akademik'    => $index->tahun_akademik,
-                            'perkuliahan'       => $index->perkuliahan,
-                            'kelas'             => $index->kelas,
-                            'sks'               => $index->sks,
+                            'tempat'            => Crypt::decryptString($val->tempat),
+                            'kode_matakuliah'   => Crypt::decryptString($val->kode_matakuliah),
+                            'nama'              => Crypt::decryptString($val->nama),
+                            'semester'          => ($val->semester),
+                            'tahun_akademik'    => ($val->tahun_akademik),
+                            'perkuliahan'       => ($val->perkuliahan),
+                            'kelas'             => Crypt::decryptString($val->kelas),
+                            'sks'               => Crypt::decryptString($val->sks),
                         ];
                     }
 
                     $data = [
                         'dataJadwalPribadi' => $timeRanges,
+                        'information'       => $this->infoSemester_Thakad(),
                     ];
                 break;
             case 'uts':

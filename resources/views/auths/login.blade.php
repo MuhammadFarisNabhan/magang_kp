@@ -81,7 +81,8 @@
                     <select name="prodi" class="input-box prodi" required>
                         <option value={{ null }}>Program Studi</option>
                         @foreach ($data as  $d)                            
-                            <option value={{ $d->id_program_studi }}>{{ $d->nama_program_studi }}</option>
+                            <option value={{ $d['id_prodi'] }}>{{ $d['prodi'] }}</option>
+                            {{-- <option value=>{{ dd($d) }}</option> --}}
                         @endforeach
                         {{-- <option value="Address 1">Informatika</option>
                         <option value="Address 1">Sistem Informasi</option> --}}

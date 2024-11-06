@@ -13,9 +13,8 @@
                 'success'   => session('success'),
                 'error'     => session('error'),
             ];
-            $cek = $mataKuliah['mataKuliah_diambil']->select('status')->first();            
-            $statusSaatIni = (isset($cek) && $cek['status'] == 'berjalan') ? $statusKRS['posted'] : $statusKRS['draft'];        
-            
+            $cek = $mataKuliah['mataKuliah_diambil'][0];                   
+            $statusSaatIni = (isset($cek) && $cek['status'] == 'berjalan') ? $statusKRS['posted'] : $statusKRS['draft'];                    
         @endphp
 
         <span class="v14b">STATUS KRS ANDA : {{ $statusSaatIni }}</span>                    
@@ -28,7 +27,7 @@
 
         @foreach ($mataKuliah['mataKuliah_diambil'] as $mK_d)
             @php
-                $jumlahSks += $mK_d->sks                
+                $jumlahSks += (int) $mK_d['sks']
                 @endphp
         @endforeach
         SKS YANG DAPAT DIAMBIL : &nbsp;<strong>24 &nbsp;SKS </strong> , Sudah Diambil :&nbsp;<strong>{{ $jumlahSks }} SKS</strong><br><br>
@@ -49,8 +48,7 @@
                 </button>
                 <form action="{{ route('simpanKRS') }}" method="POST">
                     {{ csrf_field() }}
-                    <button type="submit" name="simpanKRS" style="background-color:white; border-radius:5px;border:1px solid black;color:red;background-color:#e7f0fd; font-weight:bolder; padding:0 10px">
-                        {{-- <i class="uil uil-share"></i> <span>  </span>  --}}
+                    <button type="submit" name="simpanKRS" style="background-color:white; border-radius:5px;border:1px solid black;color:red;background-color:#e7f0fd; font-weight:bolder; padding:0 10px">                        
                         POSTING KRS
                     </button>            
                 </form>
@@ -72,14 +70,14 @@
         @foreach ($mataKuliah['mataKuliah_diambil'] as $mK_d)
             <tr class="data-row">
                 <td class="data-cell first-cell">{{ $loop->iteration }}</td>
-                <td class="data-cell">{{ $mK_d->kode_matakuliah }}</td>
-                <td class="data-cell">{{ $mK_d->kelas }}</td>
-                <td class="data-cell">{{ $mK_d->nama }}</td>
-                <td class="data-cell">{{ $mK_d->sks }}</td>
-                <td class="data-cell">{{ $mK_d->tempat }} - {{ $mK_d->waktu }}</td>
-                <td class="data-cell">{{ $mK_d->nama_dosen }}</td>
+                <td class="data-cell">{{ $mK_d['kode_matakuliah'] }}</td>
+                <td class="data-cell">{{ $mK_d['kelas'] }}</td>
+                <td class="data-cell">{{ $mK_d['matakuliah'] }}</td>
+                <td class="data-cell">{{ $mK_d['sks'] }}</td>
+                <td class="data-cell">{{ $mK_d['tempat'] }} - {{ $mK_d['waktu'] }}</td>
+                <td class="data-cell">{{ $mK_d['dosen'] }}</td>
                 <td class="data-cell">                                                    
-                    <button type="submit" class="{{ (isset($cek) && $cek['status'] == 'berjalan') ? 'hidden' : '' }}" value="{{ $mK_d->kode_matakuliah }}" name="hapusJadwal[]"
+                    <button type="submit" class="{{ (isset($cek) && $cek['status'] == 'berjalan') ? 'hidden' : '' }}" value="{{ $mK_d['kode_matakuliah'] }}" name="hapusJadwal[]"
                         style="background: transparent;border:none;text-decoration:underline;color:blue">Hapus</button>
                 </td>
             </tr>
@@ -108,19 +106,27 @@
                             <li class="text-center" style="flex-grow:2">Dosen</li>
                         </ul>
                         <ul id="selectedMKList">                                                                
-                            @foreach ($mataKuliah['mataKuliah'] as $mK)    
+                            @foreach ($mataKuliah['matakuliah'] as $mK)    
                                 <div>                                                                                                     
                                     <li class="itemInput">       
                                         <button type="submit" name="ambilMk" class="custom-submit"
-                                            value="{{ $mK->kode_matakuliah }}_{{ $mK->kelas }}_{{ $mK->nama }}_{{ $mK->tempat }} - {{ $mK->waktu }}_{{ $mK->sks }}_{{ $mK->nama_dosen }}">                                                                                                                                                                              
+                                            value="{{ $mK['kode_matakuliah'] }}_{{ $mK['kelas'] }}_{{ $mK['matakuliah'] }}_{{ $mK['tempat'] }} - {{ $mK['waktu'] }}_{{ $mK['sks'] }}_{{ $mK['dosen'] }}">                                                                                                                                                                              
                                                 <ul>
+                                                    <li class="kodeMk" style="flex-grow:1;">{{ $mK['kode_matakuliah'] }}</li>                                            
+                                                    <li class="kelas" style="flex-grow:1;">{{ $mK['kelas'] }}</li>                                            
+                                                    <li class="matakuliah" style="flex-grow:2;">{{ $mK['matakuliah'] }}</li>                                            
+                                                    <li class="jadwal" style="flex-grow:2;">{{ $mK['tempat'] }} - {{ $mK['waktu'] }}</li>                                            
+                                                    <li class="sks" style="flex-grow:1;">{{ $mK['sks'] }}</li>                                            
+                                                    <li class="dosen" style="flex-grow:2;">{{ $mK['dosen'] }} </li>                                            
+                                                </ul>                                            
+                                                {{-- <ul>
                                                     <li class="kodeMk" style="flex-grow:1;">{{ $mK->kode_matakuliah }}</li>                                            
                                                     <li class="kelas" style="flex-grow:1;">{{ $mK->kelas }}</li>                                            
                                                     <li class="matakuliah" style="flex-grow:2;">{{ $mK->nama }}</li>                                            
                                                     <li class="jadwal" style="flex-grow:2;">{{ $mK->tempat }} - {{ $mK->waktu }}</li>                                            
                                                     <li class="sks" style="flex-grow:1;">{{ $mK->sks }}</li>                                            
                                                     <li class="dosen" style="flex-grow:2;">{{ $mK->nama_dosen }} </li>                                            
-                                                </ul>                                            
+                                                </ul>                                             --}}
                                         </button>                                                                
                                     </li>    
                                 </div>

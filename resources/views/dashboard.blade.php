@@ -2,9 +2,7 @@
     <x-slot:title>{{ $title }}</x-slot:title>
     <div class="info-box">
     <div class="profile-info">
-        <img src="img/Universitas_Nasional_Logo.png" alt="Profile Picture" width="80" height="80">
-        @foreach ($mahasiswa["User"] as $m )
-        @foreach ($mahasiswa["Prodi"] as $p )
+        <img src="img/Universitas_Nasional_Logo.png" alt="Profile Picture" width="80" height="80">        
             <table class="tb">
                 <tr>
                     <td colspan="4">&nbsp;</td>
@@ -12,17 +10,17 @@
                 <tr class="vn1">
                     <td>&nbsp;&nbsp;<b>Nama</b></td>
                     <td class="vn2"><b>:</b></td>
-                    <td class="vl"><b>{{ $m->name }}</b></td>
+                    <td class="vl"><b>{{ $mahasiswa['nama'] }}</b></td>
                 </tr>
                 <tr class="vn1">
                     <td>&nbsp;&nbsp;<b>NPM</b></td>
                     <td class="vn2"><b>:</b></td>
-                    <td class="vl"><b>{{ $m->npm }}</b></td>
+                    <td class="vl"><b>{{ $mahasiswa['npm'] }}</b></td>
                 </tr>
                 <tr class="vn1">
                     <td>&nbsp;&nbsp;<b>Prodi</b></td>
                     <td class="vn2"><b>:</b></td>
-                    <td class="vl"><b>{{ $p->nama_program_studi }}</b></td>
+                    <td class="vl"><b>{{ $mahasiswa['prodi'] }}</b></td>
                 </tr>
                 <tr class="vn1">
                     <td>&nbsp;&nbsp;<b>Status</b></td>
@@ -44,9 +42,6 @@
                 </tr>
             </table>
         </div>
-        @endforeach
-        @endforeach
-
     </div>
     <div class="actions">
         <a href="/cetak-krs-kpu">

@@ -23,30 +23,30 @@ return new class extends Migration
         // });
 
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('nik');
-            $table->string('npm')->unique();
-            $table->string('email')->unique();
+            $table->string('id',512)->primary();
+            $table->string('name',512);
+            $table->string('nik',512);
+            $table->string('npm',512)->unique();
+            $table->string('email',512)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('telepon')->nullable();
-            $table->text('alamat')->nullable();
-            $table->string('image')->nullable();
-            $table->string('id_program_studi')->nullable();     
-            $table->string('id_dosen')->nullable();
+            $table->string('password',512);
+            $table->string('telepon',512)->nullable();
+            $table->text('alamat',512)->nullable();
+            $table->string('image',512)->nullable();
+            $table->string('id_program_studi',512)->nullable();     
+            $table->string('id_dosen',512)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
+            $table->string('email',512)->primary();
+            $table->string('token',512);
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id',512)->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
@@ -55,76 +55,76 @@ return new class extends Migration
         });
 
         Schema::create('khs', function(Blueprint $table){            
-            $table->string('no_khs')->primary();
-            $table->string('no_krs');
-            $table->string('npm');
-            $table->string('nilai');
+            $table->string('no_khs',512)->primary();
+            $table->string('no_krs',512);
+            $table->string('npm',512);
+            $table->string('nilai',512);
         });
         
         Schema::create('krs', function(Blueprint $table){            
-            $table->string('no_krs')->primary();            
-            $table->string('kode_matakuliah');
-            $table->string('id_penilaian')->nullable();      
-            $table->string('no_absen')->nullable();      
-            $table->string('npm');
-            $table->string('tahun_akademik')->nullable();
-            $table->string('semester')->nullable();
-            $table->string('perkuliahan')->nullable();    
+            $table->string('no_krs',512)->primary();            
+            $table->string('kode_matakuliah',512);
+            $table->string('id_penilaian',512)->nullable();      
+            $table->string('no_absen',512)->nullable();      
+            $table->string('npm',512);
+            $table->string('tahun_akademik',512)->nullable();
+            $table->string('semester',512)->nullable();
+            $table->string('perkuliahan',512)->nullable();    
             $table->enum('status', ['berjalan','selesai','diambil'])->default('diambil');
         });
 
         Schema::create('penilaian', function(Blueprint $table){
-            $table->string('id_penilaian')->primary();
-            $table->string('no_krs');
-            $table->string('sikap');
-            $table->string('tugas1');
-            $table->string('tugas2');
-            $table->string('rataTugas');
-            $table->string('uts');
-            $table->string('uas'); 
-            $table->string('total'); 
-            $table->string('huruf'); 
-            $table->string('mutu'); 
+            $table->string('id_penilaian',512)->primary();
+            $table->string('no_krs',512);
+            $table->string('sikap',512);
+            $table->string('tugas1',512);
+            $table->string('tugas2',512);
+            $table->string('rataTugas',512);
+            $table->string('uts',512);
+            $table->string('uas',512); 
+            $table->string('total',512); 
+            $table->string('huruf',512); 
+            $table->string('mutu',512); 
         });
         
         Schema::create('matakuliah', function(Blueprint $table){            
-            $table->string('kode_matakuliah')->primary();
-            $table->string('nama');
-            $table->string('sks');
-            $table->string('id_dosen')->nullable();
-            $table->string('id_program_studi');
-            $table->string('no_kelas')->nullable();
+            $table->string('kode_matakuliah',512)->primary();
+            $table->string('nama',512);
+            $table->string('sks',512);
+            $table->string('id_dosen',512)->nullable();
+            $table->string('id_program_studi',512);
+            $table->string('no_kelas',512)->nullable();
         });
         
         Schema::create('program_studi', function(Blueprint $table){            
-            $table->string('id_program_studi')->primary();
-            $table->string('nama_program_studi');
-            $table->string('fakultas');                    
+            $table->string('id_program_studi',512)->primary();
+            $table->string('nama_program_studi',512);
+            $table->string('fakultas',512);                    
         });
 
         Schema::create('dosen', function(Blueprint $table){            
-            $table->string('id_dosen')->primary();
-            $table->string('nama_dosen');
-            $table->string('alamat');
-            $table->string('tanggal_lahir');
-            $table->string('email');
-            $table->string('telepon');          
+            $table->string('id_dosen',512)->primary();
+            $table->string('nama_dosen',512);
+            $table->string('alamat',512);
+            $table->string('tanggal_lahir',512);
+            $table->string('email',512);
+            $table->string('telepon',512);          
         });
 
         Schema::create('absensi', function(Blueprint $table){
-            $table->string('no_absen')->primary();                        
-            $table->string('no_krs');
-            $table->string('hadir_dosen');
-            $table->string('hadir');
-            $table->string('hadir_tanpa_tatap_muka');
-            $table->string('ijin');
+            $table->string('no_absen',512)->primary();                        
+            $table->string('no_krs',512);
+            $table->string('hadir_dosen',512);
+            $table->string('hadir',512);
+            $table->string('hadir_tanpa_tatap_muka',512);
+            $table->string('ijin',512);
         });
         
         Schema::create('kelas', function(Blueprint $table){
-            $table->string('no_kelas')->primary();                        
-            $table->string('kelas');
-            $table->string('tempat');            
-            $table->string('waktu');            
+            $table->string('no_kelas',512)->primary();                        
+            $table->string('kelas',512);
+            $table->string('tempat',512);            
+            $table->string('waktu',512);            
         });
 
         Schema::table('khs', function($table){

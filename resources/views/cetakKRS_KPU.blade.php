@@ -15,24 +15,22 @@
                         <div class="card-body">
                         <div class="col-xxl-6 col-md-6">
                             <form action="" method="post">
-                                <table class="table table-borderless mb-0">
-                                    @foreach ($data['Krs'] as $dk)                                                                                            
+                                <table class="table table-borderless mb-0">                                                                                                                             
                                     <tbody>
                                         <tr>
                                             <th class="ps-0" style="text-align: end;" scope="row">Tahun Akademik :</th>
-                                            <td class="text-muted">{{ $dk?->tahun_akademik }}</td>
+                                            <td class="text-muted">{{ $data['tahun_akademik'] }}</td>
                                         </tr>
                                         <tr>
                                             <th class="ps-0" style="text-align: end;" scope="row">Semester :
                                             </th>
-                                                <td class="text-muted">{{ $dk?->semester }}</td>
+                                                <td class="text-muted">{{ $data['semester'] }}</td>
                                         </tr>
                                         <tr>
                                             <th class="ps-0" style="text-align: end;" scope="row">
                                                 Perkuliahan :</th>
-                                            <td class="text-muted">{{ $dk?->perkuliahan }}</td>
-                                        </tr>
-                                    @endforeach
+                                            <td class="text-muted">{{ $data['email'] }}</td>
+                                        </tr>                                    
                                         <tr>
                                             <th class="ps-0" style="text-align: end;" scope="row">Cetak :
                                             </th>

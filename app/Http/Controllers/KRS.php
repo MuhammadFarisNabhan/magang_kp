@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -50,19 +51,46 @@ class KRS extends Controller
             ->join('dosen', 'matakuliah.id_dosen', '=', 'dosen.id_dosen') 
             ->join('kelas','matakuliah.no_kelas','=','kelas.no_kelas')  
             ->select('nama_dosen','nama','matakuliah.kode_matakuliah', 'sks','kelas','tempat','waktu','status')
-            ->get();                
+            ->get();              
+        
+        $matakuliah = [];
+        foreach($mataKuliah as $mK => $val){
+            $matakuliah[] = [
+                'dosen'             => Crypt::decryptString($val->nama_dosen),
+                'matakuliah'        => Crypt::decryptString($val->nama),
+                'kode_matakuliah'   => Crypt::decryptString($val->kode_matakuliah),
+                'sks'               => Crypt::decryptString($val->sks),
+                'kelas'             => Crypt::decryptString($val->kelas),
+                'tempat'            => Crypt::decryptString($val->tempat),
+                'waktu'             => Crypt::decryptString($val->waktu),                
+            ];        
+        }        
+
+        $jadwal = [];
+        foreach($mataKuliah_diambil as $md => $val){
+            $jadwal[] = [
+                'dosen'             => Crypt::decryptString($val->nama_dosen),
+                'matakuliah'        => Crypt::decryptString($val->nama),
+                'kode_matakuliah'   => Crypt::decryptString($val->kode_matakuliah),
+                'sks'               => Crypt::decryptString($val->sks),
+                'kelas'             => Crypt::decryptString($val->kelas),
+                'tempat'            => Crypt::decryptString($val->tempat),
+                'waktu'             => Crypt::decryptString($val->waktu),
+                'status'            => ($val->status),
+            ];
+        };
 
         $data = [
-            'mataKuliah' => $mataKuliah,
-            'mataKuliah_diambil' => $mataKuliah_diambil,
+            'matakuliah' => $matakuliah,
+            'mataKuliah_diambil' => $jadwal,
         ];
 
         return view('mengisiKRS', ['title' => 'Mengisi KRS'], ['mataKuliah' => $data]);
     }
 
     public function ambilJadwal(Request $request){ 
-        $userNpm = DB::table('users')->where('id', Auth::id())->select('npm')->first();
-        
+        $userNpm = DB::table('users')->where('id', Auth::id())->select('npm')->first(); 
+        $getKodeMK = DB::table('matakuliah')->select('kode_matakuliah')->get();  
         $request->validate([
             'ambilMk' => 'required|string'
         ]);
@@ -70,24 +98,38 @@ class KRS extends Controller
         
         list($kode_matakuliah, $kelas, $nama, $jadwal , $sks, $nama_dosen) = explode('_', $ambilMk);
         
+        $hash_kode_matakuliah = "";
+        foreach($getKodeMK as $k => $val){
+            if(Crypt::decryptString($val->kode_matakuliah) == $kode_matakuliah){
+                $hash_kode_matakuliah = $val->kode_matakuliah;
+            }
+        }
+
         $data = [
-            'kode_matakuliah'   => $kode_matakuliah,
-            'kelas'             => $kelas,
-            'matakuliah'        => $nama,
-            'jadwal'            => $jadwal,
-            'sks'               => $sks,
-            'nama_dosen'        => $nama_dosen,
-        ];
+            'kode_matakuliah'   => $hash_kode_matakuliah,
+            'kelas'             => Crypt::encryptString($kelas),
+            'matakuliah'        => Crypt::encryptString($nama),
+            'jadwal'            => Crypt::encryptString($jadwal),
+            'sks'               => Crypt::encryptString($sks),
+            'nama_dosen'        => Crypt::encryptString($nama_dosen),
+        ];        
 
-        $getSks = (int) DB::table('krs')->where('krs.npm','=',$userNpm->npm)
+        $getSks = DB::table('krs')->where('krs.npm','=',$userNpm->npm)
         ->join('matakuliah', 'krs.kode_matakuliah','=','matakuliah.kode_matakuliah')        
-        ->sum('matakuliah.sks');
+        ->select('matakuliah.sks')
+        ->get();
+        
+        $sumSks = 0;
 
-        if($getSks <= 24 && $getSks + (int)$sks <= 24){
+        foreach ($getSks as $sksRecord) {            
+            $sumSks += (int) Crypt::decryptString($sksRecord->sks);
+        }                     
+
+        if($sumSks <= 24 && $sumSks + (int)$sks <= 24){
             $tahunAkademik = $this->buatTahunAkademik();
             $inserted = DB::table('krs')->where('krs.npm','=',$userNpm->npm)
             ->insert([
-                'no_krs'          => random_int(1,9999),
+                'no_krs'          => Crypt::encryptString(random_int(1,9999)),
                 'kode_matakuliah' => $data['kode_matakuliah'],
                 'id_penilaian'    => null,
                 'no_absen'        => null,
@@ -98,9 +140,9 @@ class KRS extends Controller
             ]); 
     
             if($inserted){
-                return redirect('/mengisi-krs')->with(['success'=> "'{$data['matakuliah']}' berhasil ditambahkan"]);
+                return redirect('/mengisi-krs')->with(['success'=> "'{$nama}' berhasil ditambahkan"]);
             } else {
-                return redirect('/mengisi-krs')->with(['error'=> "'{$data['matakuliah']}' gagal ditambahkan"]);
+                return redirect('/mengisi-krs')->with(['error'=> "'{$nama}' gagal ditambahkan"]);
             }
         } else {
             return redirect('/mengisi-krs')->with(['messages'=>'Batas maksimal 24 sks.']);
@@ -158,10 +200,13 @@ class KRS extends Controller
 
     public function cetakKrsKpu(){
         $userId     = DB::table('users')->where('id', Auth::id())->get();
-        $userKrs    = DB::table('krs')->where('npm',$userId->select('npm'))->get();
+        $userKrs    = DB::table('krs')->where('npm',$userId->select('npm'))->get();      
 
         $data = [
-            'Krs' => $userKrs
+            'Krs'               => $userKrs,
+            'tahun_akademik'    => $this->buatTahunAkademik(),
+            'semester'          => $this->getSemester(),
+            'email'             => Crypt::decryptString($userId->value('email')),
         ];
 
         return view('cetakKRS_KPU',['title' => 'Cetak KRS atau KPU'],['data' => $data]);
